@@ -2,16 +2,21 @@ import { getFavorites, saveFavorites } from "../utils/localStorage";
 
 const IMAGE_URL = "https://image.tmdb.org/t/p/w500";
 
-export const createMovieCard = (movie: any) => {
+export const createMovieCard = (item: any) => {
   const card = document.createElement("div");
   card.classList.add("card");
-  card.setAttribute("data-id", movie.id);
+
+  // 🔥 ID + TYPE (IMPORTANT POUR ROUTING)
+  card.setAttribute("data-id", item.id);
+  card.setAttribute("data-type", item.title ? "movie" : "tv");
 
   const img = document.createElement("img");
-  img.src = `${IMAGE_URL}${movie.poster_path}`;
+  img.src = `${IMAGE_URL}${item.poster_path}`;
 
   const title = document.createElement("h3");
-  title.textContent = movie.title;
+
+  // 🔥 film = title / série = name
+  title.textContent = item.title || item.name;
 
   const favBtn = document.createElement("button");
   favBtn.textContent = "⭐";
@@ -19,15 +24,16 @@ export const createMovieCard = (movie: any) => {
 
   favBtn.addEventListener("click", (e) => {
     e.stopPropagation();
+
     let favorites = getFavorites();
 
-    const exists = favorites.find((m: any) => m.id === movie.id);
+    const exists = favorites.find((m: any) => m.id === item.id);
 
     if (exists) {
-      favorites = favorites.filter((m: any) => m.id !== movie.id);
+      favorites = favorites.filter((m: any) => m.id !== item.id);
       console.log("❌ retiré des favoris");
     } else {
-      favorites.push(movie);
+      favorites.push(item);
       console.log("⭐ ajouté aux favoris");
     }
 

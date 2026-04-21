@@ -1,65 +1,50 @@
-import { fetchPopularMovies } from "./api/Movies";
-import { fetchMovieById } from "./api/movieDetail";
-import { renderHome } from "./pages/home";
-import { renderDetail } from "./pages/details";
-import { renderFavorites } from "./pages/favorites";
 import { createHeader } from "./components/Header";
 import { createFooter } from "./components/Footer";
+import { createRouter } from "./router/router";
 
-const root = document.querySelector("#root");
+const root = document.querySelector<HTMLDivElement>("#root");
+if (!root) throw new Error("root not found");
 
-let app: HTMLDivElement | null = null;
+root.innerHTML = "";
 
-/*  INIT DOM D'ABORD */
-if (root) {
-  root.innerHTML = "";
+// 🟢 layout
+const header = createHeader();
+const app = document.createElement("div");
+app.id = "app";
+const footer = createFooter();
 
-  const header = createHeader();
+root.appendChild(header);
+root.appendChild(app);
+root.appendChild(footer);
 
-  app = document.createElement("div");
-  app.id = "app";
+// 🟢 router
+const { navigate, router } = createRouter(app);
 
-  const footer = createFooter();
+// 🟢 navigation header
+const navHome = header.querySelector("#nav-home");
+const navFav = header.querySelector("#nav-fav");
+const navSeries = header.querySelector("#nav-series");
 
-  root.appendChild(header);
-  root.appendChild(app);
-  root.appendChild(footer);
-}
+navHome?.addEventListener("click", () => navigate("/"));
+navFav?.addEventListener("click", () => navigate("/favorites"));
+navSeries?.addEventListener("click", () => navigate("/series"));
 
-/*  LOGIQUE */
-const goHome = async () => {
-  if (!app) return;
-  const movies = await fetchPopularMovies();
-  renderHome(movies, app);
-};
-
-const handleCardClick = async (e: Event) => {
+// 🟢 click cards (détail)
+app.addEventListener("click", (e) => {
   const target = e.target as HTMLElement;
-  const card = target.closest(".card");
 
+  if (target.classList.contains("fav-btn")) return;
+
+  const card = target.closest(".card");
   if (!card) return;
 
   const id = card.getAttribute("data-id");
-  if (!id || !app) return;
+  const type = card.getAttribute("data-type"); // 🔥 AJOUT
 
-  const movie = await fetchMovieById(id);
+  if (!id || !type) return;
 
-  renderDetail(movie, app, goHome);
-};
-
-/*  EVENTS */
-app?.addEventListener("click", handleCardClick);
-
-/*  NAVIGATION */
-const navHome = document.querySelector("#nav-home");
-const navFav = document.querySelector("#nav-fav");
-
-navHome?.addEventListener("click", () => goHome());
-
-navFav?.addEventListener("click", () => {
-  if (!app) return;
-  renderFavorites(app);
+  navigate(`/${type}/${id}`); // 🔥 FIX
 });
 
-/* START */
-goHome();
+// 🟢 start app
+router();
