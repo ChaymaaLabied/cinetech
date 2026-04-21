@@ -1,11 +1,15 @@
 import { fetchPopularMovies } from "../api/Movies";
 import { fetchMovieById } from "../api/movieDetail";
+import { fetchMovieCredits } from "../api/movieCredits";
+
+import { fetchPopularSeries } from "../api/series";
+import { fetchSerieById } from "../api/serieDetail";
+import { fetchSerieCredits } from "../api/serieCredits";
+
 import { renderHome } from "../pages/home";
 import { renderDetail } from "../pages/details";
 import { renderFavorites } from "../pages/favorites";
-import { fetchPopularSeries } from "../api/series";
 import { renderSeries } from "../pages/series";
-import { fetchSerieById } from "../api/serieDetail";
 
 export const createRouter = (app: HTMLElement) => {
   const navigate = (path: string) => {
@@ -28,17 +32,21 @@ export const createRouter = (app: HTMLElement) => {
       if (!id) return;
 
       const movie = await fetchMovieById(id);
-      renderDetail(movie, app, () => navigate("/"));
+      const credits = await fetchMovieCredits(id);
+
+      renderDetail(movie, "movie", app, () => navigate("/"), credits);
       return;
     }
 
-    // 📺 DETAIL SÉRIE (🔥 AJOUT IMPORTANT)
+    // 📺 DETAIL SÉRIE
     if (path.startsWith("/tv/")) {
       const id = path.split("/")[2];
       if (!id) return;
 
       const serie = await fetchSerieById(id);
-      renderDetail(serie, app, () => navigate("/series"));
+      const credits = await fetchSerieCredits(id);
+
+      renderDetail(serie, "tv", app, () => navigate("/series"), credits);
       return;
     }
 

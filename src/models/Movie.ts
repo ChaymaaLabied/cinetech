@@ -4,4 +4,7 @@ export interface Movie {
   overview: string;
   poster_path: string;
   release_date: string;
+  vote_average: number;
+  genres?: { id: number; name: string }[];
+  origin_country?: string[];
 }
