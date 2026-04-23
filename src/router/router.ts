@@ -1,12 +1,15 @@
-import { fetchPopularMovies } from "../api/Movies";
+import { fetchPopularMovies } from "../api/movies";
 import { fetchMovieById } from "../api/movieDetail";
 import { fetchMovieCredits } from "../api/movieCredits";
+import { fetchMovieReviews } from "../api/movieReviews";
 
 import { fetchPopularSeries } from "../api/series";
 import { fetchSerieById } from "../api/serieDetail";
 import { fetchSerieCredits } from "../api/serieCredits";
+import { fetchSerieReviews } from "../api/serieReviews";
 
 import { renderHome } from "../pages/home";
+import { renderMovies } from "../pages/movies";
 import { renderDetail } from "../pages/details";
 import { renderFavorites } from "../pages/favorites";
 import { renderSeries } from "../pages/series";
@@ -33,8 +36,16 @@ export const createRouter = (app: HTMLElement) => {
 
       const movie = await fetchMovieById(id);
       const credits = await fetchMovieCredits(id);
+      const reviews = await fetchMovieReviews(id); // 🔥 AJOUT
 
-      renderDetail(movie, "movie", app, () => navigate("/"), credits);
+      renderDetail(
+        movie,
+        "movie",
+        app,
+        () => navigate("/movies"),
+        credits,
+        reviews, // 🔥 AJOUT
+      );
       return;
     }
 
@@ -45,23 +56,40 @@ export const createRouter = (app: HTMLElement) => {
 
       const serie = await fetchSerieById(id);
       const credits = await fetchSerieCredits(id);
+      const reviews = await fetchSerieReviews(id); // 🔥 AJOUT
 
-      renderDetail(serie, "tv", app, () => navigate("/series"), credits);
+      renderDetail(
+        serie,
+        "tv",
+        app,
+        () => navigate("/series"),
+        credits,
+        reviews, // 🔥 AJOUT
+      );
+      return;
+    }
+
+    // 🎬 LISTE FILMS
+    if (path === "/movies") {
+      await renderMovies(app);
       return;
     }
 
     // 📺 LISTE SÉRIES
     if (path === "/series") {
-      const series = await fetchPopularSeries();
-      renderSeries(series, app);
+      await renderSeries(app);
       return;
     }
 
     // 🏠 HOME
-    const movies = await fetchPopularMovies();
-    const series = await fetchPopularSeries();
+    const moviesData = await fetchPopularMovies();
+    const seriesData = await fetchPopularSeries();
 
-    renderHome(movies, series, app);
+    renderHome(
+      moviesData.results || moviesData,
+      seriesData.results || seriesData,
+      app,
+    );
   };
 
   window.addEventListener("popstate", router);

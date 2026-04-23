@@ -5,6 +5,10 @@ export const createHeader = () => {
   homeBtn.textContent = "Home";
   homeBtn.id = "nav-home";
 
+  const moviesBtn = document.createElement("button");
+  moviesBtn.textContent = "Films";
+  moviesBtn.id = "nav-movies";
+
   const seriesBtn = document.createElement("button");
   seriesBtn.textContent = "Séries";
   seriesBtn.id = "nav-series";
@@ -14,6 +18,7 @@ export const createHeader = () => {
   favBtn.id = "nav-fav";
 
   header.appendChild(homeBtn);
+  header.appendChild(moviesBtn);
   header.appendChild(seriesBtn);
   header.appendChild(favBtn);
 

@@ -1,5 +1,5 @@
-import { getFavorites } from "../utils/localStorage";
-import { createMovieCard } from "../components/movieCard";
+import { getFavorites, saveFavorites } from "../utils/localStorage";
+import { createMovieCard } from "../components/MovieCard";
 
 export const renderFavorites = (app: HTMLElement | null) => {
   if (!app) return;
@@ -18,16 +18,21 @@ export const renderFavorites = (app: HTMLElement | null) => {
     return;
   }
 
-  favorites.forEach((movie: any) => {
-    const card = createMovieCard(movie);
-    const favBtn = card.querySelector<HTMLButtonElement>(".fav-btn");
+  favorites.forEach((item: any) => {
+    const type = item.title ? "movie" : "tv";
 
-    favBtn?.addEventListener("click", () => {
-      // 🔥 désactiver bouton après click
-      if (favBtn) {
-        favBtn.disabled = true;
-        favBtn.style.opacity = "0.5";
-      }
+    const card = createMovieCard(item, type);
+
+    const favBtn = card.querySelector(".fav-btn") as HTMLButtonElement;
+
+    favBtn.addEventListener("click", (e) => {
+      e.stopPropagation();
+
+      let updated = getFavorites().filter((f: any) => f.id !== item.id);
+
+      saveFavorites(updated);
+
+      renderFavorites(app); // refresh UI
     });
 
     container.appendChild(card);

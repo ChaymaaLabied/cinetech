@@ -1,4 +1,4 @@
-import { createMovieCard } from "../components/movieCard";
+import { createMovieCard } from "../components/MovieCard";
 
 export const renderHome = (
   movies: any[],
@@ -17,7 +17,7 @@ export const renderHome = (
   moviesContainer.classList.add("movies-container");
 
   movies.slice(0, 6).forEach((movie) => {
-    const card = createMovieCard(movie);
+    const card = createMovieCard(movie, "movie"); // ✔ FIX
     moviesContainer.appendChild(card);
   });
 
@@ -29,11 +29,10 @@ export const renderHome = (
   seriesContainer.classList.add("movies-container");
 
   series.slice(0, 6).forEach((item) => {
-    const card = createMovieCard(item);
+    const card = createMovieCard(item, "tv"); // ✔ FIX
     seriesContainer.appendChild(card);
   });
 
-  // 🔥 APPEND
   app.appendChild(moviesTitle);
   app.appendChild(moviesContainer);
   app.appendChild(seriesTitle);

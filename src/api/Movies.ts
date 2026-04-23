@@ -1,15 +1,10 @@
 import { API_KEY, BASE_URL } from "./config";
-import type { Movie } from "../models/Movie";
 
-interface ApiResponse {
-  results: Movie[];
-}
-
-export const fetchPopularMovies = async (): Promise<Movie[]> => {
+export const fetchPopularMovies = async (page: number = 1) => {
   const res = await fetch(
-    `${BASE_URL}/movie/popular?api_key=${API_KEY}`
+    `${BASE_URL}/movie/popular?api_key=${API_KEY}&page=${page}`,
   );
 
-  const data: ApiResponse = await res.json();
-  return data.results;
+  const data = await res.json();
+  return data;
 };

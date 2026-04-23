@@ -1,18 +1,18 @@
-import { fetchPopularSeries } from "../api/series";
-import { searchSeries } from "../api/searchSeries";
+import { fetchPopularMovies } from "../api/movies";
+import { searchMovies } from "../api/searchMovies";
 import { createMovieCard } from "../components/MovieCard";
 import { debounce } from "../utils/debounce";
 
 let currentPage = 1;
 let currentQuery = "";
 
-export const renderSeries = async (app: HTMLElement | null) => {
+export const renderMovies = async (app: HTMLElement | null) => {
   if (!app) return;
 
   app.innerHTML = "";
 
   const searchInput = document.createElement("input");
-  searchInput.placeholder = "Rechercher une série...";
+  searchInput.placeholder = "Rechercher un film...";
 
   const container = document.createElement("div");
   container.classList.add("movies-container");
@@ -23,19 +23,19 @@ export const renderSeries = async (app: HTMLElement | null) => {
     let data;
 
     if (currentQuery) {
-      data = await searchSeries(currentQuery, currentPage);
+      data = await searchMovies(currentQuery, currentPage);
     } else {
-      data = await fetchPopularSeries(currentPage);
+      data = await fetchPopularMovies(currentPage);
     }
 
     container.innerHTML = "";
 
-    data.results.forEach((item: any) => {
-      container.appendChild(createMovieCard(item, "tv"));
+    data.results.forEach((movie: any) => {
+      container.appendChild(createMovieCard(movie, "movie"));
     });
   };
 
-  // 🔥 LIVE SEARCH
+  // 🔥 LIVE SEARCH (DEBOUNCE)
   searchInput.addEventListener(
     "input",
     debounce(async (e: any) => {
