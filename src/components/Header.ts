@@ -1,26 +1,39 @@
 export const createHeader = () => {
-  const header = document.createElement("header");
+  const nav = document.createElement("nav");
+  nav.className =
+    "navbar navbar-expand-lg navbar-dark bg-dark border-bottom border-secondary";
 
-  const homeBtn = document.createElement("button");
-  homeBtn.textContent = "Home";
-  homeBtn.id = "nav-home";
+  const container = document.createElement("div");
+  container.className = "container-fluid";
 
-  const moviesBtn = document.createElement("button");
-  moviesBtn.textContent = "Films";
-  moviesBtn.id = "nav-movies";
+  const brand = document.createElement("span");
+  brand.className = "navbar-brand fw-bold text-warning fs-4";
+  brand.textContent = "🎬 Cinetech";
 
-  const seriesBtn = document.createElement("button");
-  seriesBtn.textContent = "Séries";
-  seriesBtn.id = "nav-series";
+  const navList = document.createElement("ul");
+  navList.className = "navbar-nav ms-auto flex-row gap-2";
 
-  const favBtn = document.createElement("button");
-  favBtn.textContent = "Favoris ⭐";
-  favBtn.id = "nav-fav";
+  const navItems: { id: string; label: string }[] = [
+    { id: "nav-home", label: "Accueil" },
+    { id: "nav-movies", label: "Films" },
+    { id: "nav-series", label: "Séries" },
+    { id: "nav-fav", label: "⭐ Favoris" },
+  ];
 
-  header.appendChild(homeBtn);
-  header.appendChild(moviesBtn);
-  header.appendChild(seriesBtn);
-  header.appendChild(favBtn);
+  navItems.forEach(({ id, label }) => {
+    const li = document.createElement("li");
+    li.className = "nav-item";
+    const btn = document.createElement("button");
+    btn.className = "btn btn-link nav-link text-white px-2";
+    btn.id = id;
+    btn.textContent = label;
+    li.appendChild(btn);
+    navList.appendChild(li);
+  });
 
-  return header;
+  container.appendChild(brand);
+  container.appendChild(navList);
+  nav.appendChild(container);
+
+  return nav;
 };

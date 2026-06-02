@@ -1,0 +1,32 @@
+/* Custom overrides on top of Bootstrap 5 */
+
+.movie-card {
+  background-color: #1e1e2e !important;
+  transition:
+    transform 0.2s ease,
+    box-shadow 0.2s ease;
+  cursor: pointer;
+}
+
+.movie-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 8px 28px rgba(0, 0, 0, 0.6) !important;
+}
+
+.movie-card .card-img-top {
+  aspect-ratio: 2 / 3;
+  object-fit: cover;
+}
+
+.navbar-brand {
+  letter-spacing: 1px;
+}
+
+footer {
+  font-size: 0.85rem;
+}
+
+/* Dark form controls */
+.form-control::placeholder {
+  color: #aaa;
+}

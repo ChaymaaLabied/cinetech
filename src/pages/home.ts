@@ -1,4 +1,4 @@
-import { createMovieCard } from "../components/MovieCard";
+import { createMovieCard } from "../components/movieCard";
 
 export const renderHome = (
   movies: any[],
@@ -9,32 +9,39 @@ export const renderHome = (
 
   app.innerHTML = "";
 
-  // 🔥 FILMS
+  const wrapper = document.createElement("div");
+  wrapper.className = "container-fluid py-4";
+
+  // 🎥 FILMS
   const moviesTitle = document.createElement("h2");
-  moviesTitle.textContent = "Films";
+  moviesTitle.className = "mb-3";
+  moviesTitle.textContent = "🎥 Films populaires";
 
   const moviesContainer = document.createElement("div");
-  moviesContainer.classList.add("movies-container");
+  moviesContainer.className =
+    "row row-cols-2 row-cols-md-3 row-cols-lg-4 row-cols-xl-5 g-3 mb-5";
 
-  movies.slice(0, 6).forEach((movie) => {
-    const card = createMovieCard(movie, "movie"); // ✔ FIX
-    moviesContainer.appendChild(card);
+  movies.slice(0, 10).forEach((movie) => {
+    moviesContainer.appendChild(createMovieCard(movie, "movie"));
   });
 
-  // 🔥 SERIES
+  // 📺 SERIES
   const seriesTitle = document.createElement("h2");
-  seriesTitle.textContent = "Séries";
+  seriesTitle.className = "mb-3";
+  seriesTitle.textContent = "📺 Séries populaires";
 
   const seriesContainer = document.createElement("div");
-  seriesContainer.classList.add("movies-container");
+  seriesContainer.className =
+    "row row-cols-2 row-cols-md-3 row-cols-lg-4 row-cols-xl-5 g-3";
 
-  series.slice(0, 6).forEach((item) => {
-    const card = createMovieCard(item, "tv"); // ✔ FIX
-    seriesContainer.appendChild(card);
+  series.slice(0, 10).forEach((item) => {
+    seriesContainer.appendChild(createMovieCard(item, "tv"));
   });
 
-  app.appendChild(moviesTitle);
-  app.appendChild(moviesContainer);
-  app.appendChild(seriesTitle);
-  app.appendChild(seriesContainer);
+  wrapper.appendChild(moviesTitle);
+  wrapper.appendChild(moviesContainer);
+  wrapper.appendChild(seriesTitle);
+  wrapper.appendChild(seriesContainer);
+
+  app.appendChild(wrapper);
 };

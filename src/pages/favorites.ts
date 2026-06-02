@@ -1,42 +1,50 @@
 import { getFavorites, saveFavorites } from "../utils/localStorage";
-import { createMovieCard } from "../components/MovieCard";
+import { createMovieCard } from "../components/movieCard";
 
 export const renderFavorites = (app: HTMLElement | null) => {
   if (!app) return;
 
   app.innerHTML = "";
 
-  const favorites = getFavorites();
+  const wrapper = document.createElement("div");
+  wrapper.className = "container-fluid py-4";
 
-  const container = document.createElement("div");
-  container.classList.add("movies-container");
+  const pageTitle = document.createElement("h2");
+  pageTitle.className = "mb-4";
+  pageTitle.textContent = "⭐ Mes Favoris";
+
+  wrapper.appendChild(pageTitle);
+
+  const favorites = getFavorites();
 
   if (favorites.length === 0) {
     const empty = document.createElement("p");
-    empty.textContent = "Aucun favori ⭐";
-    app.appendChild(empty);
+    empty.className = "text-secondary";
+    empty.textContent = "Aucun favori pour le moment.";
+    wrapper.appendChild(empty);
+    app.appendChild(wrapper);
     return;
   }
 
+  const container = document.createElement("div");
+  container.className =
+    "row row-cols-2 row-cols-md-3 row-cols-lg-4 row-cols-xl-5 g-3";
+
   favorites.forEach((item: any) => {
     const type = item.title ? "movie" : "tv";
+    const col = createMovieCard(item, type);
 
-    const card = createMovieCard(item, type);
-
-    const favBtn = card.querySelector(".fav-btn") as HTMLButtonElement;
-
+    const favBtn = col.querySelector(".fav-btn") as HTMLButtonElement;
     favBtn.addEventListener("click", (e) => {
       e.stopPropagation();
-
-      let updated = getFavorites().filter((f: any) => f.id !== item.id);
-
+      const updated = getFavorites().filter((f: any) => f.id !== item.id);
       saveFavorites(updated);
-
-      renderFavorites(app); // refresh UI
+      renderFavorites(app);
     });
 
-    container.appendChild(card);
+    container.appendChild(col);
   });
 
-  app.appendChild(container);
+  wrapper.appendChild(container);
+  app.appendChild(wrapper);
 };

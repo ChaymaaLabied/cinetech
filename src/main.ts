@@ -11,6 +11,7 @@ root.innerHTML = "";
 const header = createHeader();
 const app = document.createElement("div");
 app.id = "app";
+app.className = "flex-grow-1";
 const footer = createFooter();
 
 root.appendChild(header);

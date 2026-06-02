@@ -2,11 +2,13 @@ import { fetchPopularMovies } from "../api/movies";
 import { fetchMovieById } from "../api/movieDetail";
 import { fetchMovieCredits } from "../api/movieCredits";
 import { fetchMovieReviews } from "../api/movieReviews";
+import { fetchSimilarMovies } from "../api/similarMovies";
 
 import { fetchPopularSeries } from "../api/series";
 import { fetchSerieById } from "../api/serieDetail";
 import { fetchSerieCredits } from "../api/serieCredits";
 import { fetchSerieReviews } from "../api/serieReviews";
+import { fetchSimilarSeries } from "../api/similarSeries";
 
 import { renderHome } from "../pages/home";
 import { renderMovies } from "../pages/movies";
@@ -36,7 +38,8 @@ export const createRouter = (app: HTMLElement) => {
 
       const movie = await fetchMovieById(id);
       const credits = await fetchMovieCredits(id);
-      const reviews = await fetchMovieReviews(id); // 🔥 AJOUT
+      const reviews = await fetchMovieReviews(id);
+      const similar = await fetchSimilarMovies(id);
 
       renderDetail(
         movie,
@@ -44,7 +47,8 @@ export const createRouter = (app: HTMLElement) => {
         app,
         () => navigate("/movies"),
         credits,
-        reviews, // 🔥 AJOUT
+        reviews,
+        similar,
       );
       return;
     }
@@ -56,7 +60,8 @@ export const createRouter = (app: HTMLElement) => {
 
       const serie = await fetchSerieById(id);
       const credits = await fetchSerieCredits(id);
-      const reviews = await fetchSerieReviews(id); // 🔥 AJOUT
+      const reviews = await fetchSerieReviews(id);
+      const similar = await fetchSimilarSeries(id);
 
       renderDetail(
         serie,
@@ -64,7 +69,8 @@ export const createRouter = (app: HTMLElement) => {
         app,
         () => navigate("/series"),
         credits,
-        reviews, // 🔥 AJOUT
+        reviews,
+        similar,
       );
       return;
     }
