@@ -17,21 +17,23 @@ import { renderFavorites } from "../pages/favorites";
 import { renderSeries } from "../pages/series";
 
 export const createRouter = (app: HTMLElement) => {
+  // Change l'URL et affiche la page correspondante
   const navigate = (path: string) => {
     history.pushState({}, "", path);
     router();
   };
 
+  // Vérifie l'URL actuelle et affiche la bonne page
   const router = async () => {
     const path = window.location.pathname;
 
-    // ⭐ FAVORIS
+    // Page favoris
     if (path === "/favorites") {
       renderFavorites(app);
       return;
     }
 
-    // 🎬 DETAIL FILM
+    // Détail d'un film
     if (path.startsWith("/movie/")) {
       const id = path.split("/")[2];
       if (!id) return;
@@ -53,7 +55,7 @@ export const createRouter = (app: HTMLElement) => {
       return;
     }
 
-    // 📺 DETAIL SÉRIE
+    // Détail d'une série
     if (path.startsWith("/tv/")) {
       const id = path.split("/")[2];
       if (!id) return;
@@ -75,19 +77,19 @@ export const createRouter = (app: HTMLElement) => {
       return;
     }
 
-    // 🎬 LISTE FILMS
+    // Liste des films
     if (path === "/movies") {
       await renderMovies(app);
       return;
     }
 
-    // 📺 LISTE SÉRIES
+    // Liste des séries
     if (path === "/series") {
       await renderSeries(app);
       return;
     }
 
-    // 🏠 HOME
+    // Page d'accueil
     const moviesData = await fetchPopularMovies();
     const seriesData = await fetchPopularSeries();
 
@@ -98,6 +100,7 @@ export const createRouter = (app: HTMLElement) => {
     );
   };
 
+  // Gère les boutons précédent / suivant du navigateur
   window.addEventListener("popstate", router);
 
   return { navigate, router };

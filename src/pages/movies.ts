@@ -48,7 +48,7 @@ export const renderMovies = async (app: HTMLElement | null) => {
     pageInfo.textContent = `Page ${currentPage}`;
   };
 
-  // 🔥 LIVE SEARCH (DEBOUNCE)
+  // LIVE SEARCH (DEBOUNCE)
   searchInput.addEventListener(
     "input",
     debounce(async (e: any) => {
@@ -58,7 +58,7 @@ export const renderMovies = async (app: HTMLElement | null) => {
     }, 400),
   );
 
-  // 🔥 PAGINATION
+  // PAGINATION
   const prev = document.createElement("button");
   prev.className = "btn btn-outline-light";
   prev.textContent = "← Précédent";

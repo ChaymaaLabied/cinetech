@@ -12,7 +12,7 @@ export const renderHome = (
   const wrapper = document.createElement("div");
   wrapper.className = "container-fluid py-4";
 
-  // 🎥 FILMS
+  // FILMS
   const moviesTitle = document.createElement("h2");
   moviesTitle.className = "mb-3";
   moviesTitle.textContent = "🎥 Films populaires";
@@ -25,7 +25,7 @@ export const renderHome = (
     moviesContainer.appendChild(createMovieCard(movie, "movie"));
   });
 
-  // 📺 SERIES
+  // SERIES
   const seriesTitle = document.createElement("h2");
   seriesTitle.className = "mb-3";
   seriesTitle.textContent = "📺 Séries populaires";

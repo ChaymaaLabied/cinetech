@@ -7,21 +7,23 @@ if (!root) throw new Error("root not found");
 
 root.innerHTML = "";
 
-// 🟢 layout
+// Création de la structure principale
 const header = createHeader();
+
 const app = document.createElement("div");
 app.id = "app";
 app.className = "flex-grow-1";
+
 const footer = createFooter();
 
 root.appendChild(header);
 root.appendChild(app);
 root.appendChild(footer);
 
-// 🟢 router
+// Initialisation du routeur
 const { navigate, router } = createRouter(app);
 
-// 🟢 navigation header
+// Navigation du menu
 const navHome = header.querySelector("#nav-home");
 const navMovies = header.querySelector("#nav-movies");
 const navFav = header.querySelector("#nav-fav");
@@ -32,11 +34,11 @@ navMovies?.addEventListener("click", () => navigate("/movies"));
 navFav?.addEventListener("click", () => navigate("/favorites"));
 navSeries?.addEventListener("click", () => navigate("/series"));
 
-// 🟢 click cards (détail)
+// Gestion du clic sur une carte
 app.addEventListener("click", (e) => {
   const target = e.target as HTMLElement;
 
-  // ❌ ignore fav button
+  // Ignore le bouton favoris
   if (target.classList.contains("fav-btn")) return;
 
   const card = target.closest(".card");
@@ -50,5 +52,5 @@ app.addEventListener("click", (e) => {
   navigate(`/${type}/${id}`);
 });
 
-// 🟢 start app
+// Lancement de l'application
 router();
