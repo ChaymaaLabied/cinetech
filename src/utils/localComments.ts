@@ -1,19 +1,45 @@
-export const getComments = (key: string) => {
+const getCommentsData = () => {
   const data = localStorage.getItem("comments");
-  const comments = data ? JSON.parse(data) : {};
+  return data ? JSON.parse(data) : {};
+};
 
-  return comments[key] || [];
+const saveCommentsData = (comments: any) => {
+  localStorage.setItem("comments", JSON.stringify(comments));
+};
+
+export const getComments = (key: string) => {
+  return getCommentsData()[key] || [];
 };
 
 export const addComment = (key: string, comment: any) => {
-  const data = localStorage.getItem("comments");
-  const comments = data ? JSON.parse(data) : {};
-
+  const comments = getCommentsData();
   if (!comments[key]) {
     comments[key] = [];
   }
+  comments[key].push({ ...comment, replies: [] });
+  saveCommentsData(comments);
+};
 
-  comments[key].push(comment);
+export const addReply = (key: string, index: number, reply: any) => {
+  const comments = getCommentsData();
+  if (!comments[key]) {
+    comments[key] = [];
+  }
+  if (!comments[key][index]) {
+    comments[key][index] = { replies: [] };
+  }
+  if (!comments[key][index].replies) {
+    comments[key][index].replies = [];
+  }
+  comments[key][index].replies.push(reply);
+  saveCommentsData(comments);
+};
 
-  localStorage.setItem("comments", JSON.stringify(comments));
+export const addApiReply = (key: string, reply: any) => {
+  const comments = getCommentsData();
+  if (!comments[key]) {
+    comments[key] = [];
+  }
+  comments[key].push(reply);
+  saveCommentsData(comments);
 };
