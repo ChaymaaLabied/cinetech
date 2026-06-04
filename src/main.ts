@@ -28,11 +28,13 @@ const navHome = header.querySelector("#nav-home");
 const navMovies = header.querySelector("#nav-movies");
 const navFav = header.querySelector("#nav-fav");
 const navSeries = header.querySelector("#nav-series");
+const navBrand = header.querySelector("#nav-brand");
 
 navHome?.addEventListener("click", () => navigate("/"));
 navMovies?.addEventListener("click", () => navigate("/movies"));
 navFav?.addEventListener("click", () => navigate("/favorites"));
 navSeries?.addEventListener("click", () => navigate("/series"));
+navBrand?.addEventListener("click", () => navigate("/"));
 
 // Gestion du clic sur une carte
 app.addEventListener("click", (e) => {
