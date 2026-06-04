@@ -1,45 +1,54 @@
-const getCommentsData = () => {
-  const data = localStorage.getItem("comments");
-  return data ? JSON.parse(data) : {};
-};
-
-const saveCommentsData = (comments: any) => {
-  localStorage.setItem("comments", JSON.stringify(comments));
-};
-
 export const getComments = (key: string) => {
-  return getCommentsData()[key] || [];
+  const data = localStorage.getItem("comments");
+  const comments = data ? JSON.parse(data) : {};
+  return comments[key] || [];
 };
 
 export const addComment = (key: string, comment: any) => {
-  const comments = getCommentsData();
+  const data = localStorage.getItem("comments");
+  const comments = data ? JSON.parse(data) : {};
+
   if (!comments[key]) {
     comments[key] = [];
   }
-  comments[key].push({ ...comment, replies: [] });
-  saveCommentsData(comments);
+
+  const newComment = {
+    ...comment,
+    id: Date.now(),
+    replies: [],
+  };
+
+  comments[key].push(newComment);
+
+  localStorage.setItem("comments", JSON.stringify(comments));
 };
 
-export const addReply = (key: string, index: number, reply: any) => {
-  const comments = getCommentsData();
-  if (!comments[key]) {
-    comments[key] = [];
+export const addReply = (key: string, commentId: number, reply: any) => {
+  const data = localStorage.getItem("comments");
+  const comments = data ? JSON.parse(data) : {};
+
+  if (comments[key]) {
+    const comment = comments[key].find((c: any) => c.id === commentId);
+    if (comment) {
+      const newReply = {
+        ...reply,
+        id: Date.now(),
+      };
+      if (!comment.replies) {
+        comment.replies = [];
+      }
+      comment.replies.push(newReply);
+      localStorage.setItem("comments", JSON.stringify(comments));
+    }
   }
-  if (!comments[key][index]) {
-    comments[key][index] = { replies: [] };
-  }
-  if (!comments[key][index].replies) {
-    comments[key][index].replies = [];
-  }
-  comments[key][index].replies.push(reply);
-  saveCommentsData(comments);
 };
 
 export const addApiReply = (key: string, reply: any) => {
-  const comments = getCommentsData();
-  if (!comments[key]) {
-    comments[key] = [];
-  }
-  comments[key].push(reply);
-  saveCommentsData(comments);
+  const comments = getComments(key);
+  comments.push(reply);
+
+  const data = localStorage.getItem("comments");
+  const allComments = data ? JSON.parse(data) : {};
+  allComments[key] = comments;
+  localStorage.setItem("comments", JSON.stringify(allComments));
 };
